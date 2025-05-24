@@ -31,14 +31,20 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image inside Minikube Docker') {
-            steps {
-                bat '''
-                eval $(minikube docker-env)
-                docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
-                '''
-            }
-        }
+       stage('Build Docker Image inside Minikube Docker') {
+    steps {
+        bat '''
+        powershell -Command "& { 
+            $Env:DOCKER_TLS_VERIFY = '1'; 
+            $Env:DOCKER_HOST = 'tcp://127.0.0.1:60846'; 
+            $Env:DOCKER_CERT_PATH = 'C:\\Users\\User\\.minikube\\certs'; 
+            $Env:MINIKUBE_ACTIVE_DOCKERD = 'minikube'; 
+            docker build -t %IMAGE_NAME%:%IMAGE_TAG% . 
+        }"
+        '''
+    }
+}
+
 
         stage('Deploy to Minikube (Kubernetes)') {
             steps {
