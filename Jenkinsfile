@@ -19,21 +19,21 @@ pipeline {
 
         stage('Debug environment') {
             steps {
-                sh 'echo "JAVA_HOME=$JAVA_HOME"'
-                sh 'java -version'
-                sh 'mvn --version'
+                bat 'echo "JAVA_HOME=$JAVA_HOME"'
+                bat 'java -version'
+                bat 'mvn --version'
             }
         }
 
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                bat 'mvn clean package -DskipTests'
             }
         }
 
         stage('Build Docker Image inside Minikube Docker') {
             steps {
-                sh '''
+                bat '''
                 eval $(minikube docker-env)
                 docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                 '''
@@ -42,8 +42,8 @@ pipeline {
 
         stage('Deploy to Minikube (Kubernetes)') {
             steps {
-                sh 'kubectl apply -f k8s/deployment.yaml'
-                sh 'kubectl apply -f k8s/service.yaml'
+                bat 'kubectl apply -f k8s/deployment.yaml'
+                bat 'kubectl apply -f k8s/service.yaml'
             }
         }
     }
