@@ -3,6 +3,22 @@ pipeline {
 	 tools {
         maven 'maven 3.9.9'  // <-- use your configured Maven name here
     }
+     stages {
+        stage('Debug environment') {
+            steps {
+                sh 'echo "JAVA_HOME=$JAVA_HOME"'
+                sh 'java -version'
+                sh 'mvn --version'
+            }
+        }
+
+        stage('Build with Maven') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+    }
+}
     environment {
         IMAGE_NAME = "myapp"
         IMAGE_TAG = "latest"
