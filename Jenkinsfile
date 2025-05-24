@@ -17,8 +17,7 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
-    }
-}
+    
     environment {
         IMAGE_NAME = "myapp"
         IMAGE_TAG = "latest"
