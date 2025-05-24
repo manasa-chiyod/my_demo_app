@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+	 tools {
+        maven 'maven 3.9.9'  // <-- use your configured Maven name here
+    }
     environment {
         IMAGE_NAME = "myapp"
         IMAGE_TAG = "latest"
